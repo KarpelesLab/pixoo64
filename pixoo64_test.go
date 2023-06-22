@@ -43,5 +43,5 @@ func TestBasics(t *testing.T) {
 	}
 
 	// send it
-	anim.SendTo(dev.Pixoo64)
+	anim.SendTo(dev)
 }

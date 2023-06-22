@@ -29,7 +29,7 @@ func (a *Anim) AppendFrame(img image.Image, time int) error {
 	return nil
 }
 
-func (a *Anim) SendTo(dev Pixoo64) error {
+func (a *Anim) SendTo(dev *Pixoo64) error {
 	if len(a.Frames) == 0 || len(a.Frames) >= 60 {
 		return errors.New("animation frames count invalid")
 	}

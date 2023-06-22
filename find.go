@@ -6,20 +6,13 @@ import (
 	"net/http"
 )
 
-type Pixoo64Desc struct {
-	Pixoo64    `json:"DevicePrivateIP"`
-	DeviceName string // "Pixoo64"
-	DeviceId   int    // 300054377
-	DeviceMac  string // "c8f09e3b0964"
-}
-
 type pixoo64LanResponse struct {
 	ReturnCode    int    // 0
 	ReturnMessage string // ""
-	DeviceList    []*Pixoo64Desc
+	DeviceList    []*Pixoo64
 }
 
-func SameLANDevices() ([]*Pixoo64Desc, error) {
+func SameLANDevices() ([]*Pixoo64, error) {
 	req, err := http.NewRequest("GET", "https://app.divoom-gz.com/Device/ReturnSameLANDevice", nil)
 	if err != nil {
 		return nil, err
@@ -42,7 +35,7 @@ func SameLANDevices() ([]*Pixoo64Desc, error) {
 	return r.DeviceList, nil
 }
 
-func FindFirst() (*Pixoo64Desc, error) {
+func FindFirst() (*Pixoo64, error) {
 	lst, err := SameLANDevices()
 	if err != nil {
 		return nil, err
