@@ -3,7 +3,7 @@ package pixoo64
 import (
 	"encoding/json"
 	"errors"
-	"net/http"
+	"io/fs"
 )
 
 type pixoo64LanResponse struct {
@@ -13,12 +13,7 @@ type pixoo64LanResponse struct {
 }
 
 func SameLANDevices() ([]*Pixoo64, error) {
-	req, err := http.NewRequest("GET", "https://app.divoom-gz.com/Device/ReturnSameLANDevice", nil)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := Client.Do(req)
+	resp, err := Client.Get("https://app.divoom-gz.com/Device/ReturnSameLANDevice")
 	if err != nil {
 		return nil, err
 	}
@@ -46,4 +41,46 @@ func FindFirst() (*Pixoo64, error) {
 	}
 
 	return lst[0], nil
+}
+
+func FindId(id int) (*Pixoo64, error) {
+	lst, err := SameLANDevices()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, dev := range lst {
+		if dev.DeviceId == id {
+			return dev, nil
+		}
+	}
+	return nil, fs.ErrNotExist
+}
+
+func FindMac(mac string) (*Pixoo64, error) {
+	lst, err := SameLANDevices()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, dev := range lst {
+		if dev.DeviceMac == mac {
+			return dev, nil
+		}
+	}
+	return nil, fs.ErrNotExist
+}
+
+func FindName(name string) (*Pixoo64, error) {
+	lst, err := SameLANDevices()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, dev := range lst {
+		if dev.DeviceName == name {
+			return dev, nil
+		}
+	}
+	return nil, fs.ErrNotExist
 }
