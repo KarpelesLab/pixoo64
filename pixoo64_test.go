@@ -25,4 +25,5 @@ func TestBasics(t *testing.T) {
 	log.Printf("%+v %v", w, err)
 
 	dev.ShortBeeps(3)
+
 }

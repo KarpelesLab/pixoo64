@@ -55,6 +55,13 @@ func (p Pixoo64) command(cmd string, args map[string]any, target any) error {
 	return err
 }
 
+// Reboot will reboot the device. Expect this to return an error such as:
+//
+// net/http: HTTP/1.x transport connection broken: unexpected EOF
+func (p Pixoo64) Reboot() error {
+	return p.command("Device/SysReboot", nil, nil)
+}
+
 // GetAllConf retrieves all configuration parameters from the device
 func (p Pixoo64) GetAllConf() (*Config, error) {
 	var obj *Config
