@@ -12,11 +12,14 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
-const TestDevice = "192.168.19.154"
-
 func TestBasics(t *testing.T) {
 	// this requires having an actual device
-	dev := pixoo64.New(TestDevice)
+	dev, err := pixoo64.FindFirst()
+	if err != nil {
+		t.Fatalf("could not locate device: %s", err)
+		return
+	}
+	log.Printf("found device: %+v", dev)
 
 	res, err := dev.GetAllConf()
 	if err != nil {
@@ -40,5 +43,5 @@ func TestBasics(t *testing.T) {
 	}
 
 	// send it
-	anim.SendTo(dev)
+	anim.SendTo(dev.Pixoo64)
 }
