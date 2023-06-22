@@ -6,4 +6,4 @@ This is a simple to use lib to send data to pixoo64. It requires the device's IP
 
 # Links
 
-Documentation: http://doc.divoom-gz.com/web/#/12?page_id=242
+Documentation: http://docin.divoom-gz.com/web/#/5/23
