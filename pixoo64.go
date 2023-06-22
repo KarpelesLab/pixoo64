@@ -138,3 +138,7 @@ func (p *Pixoo64) ShortBeeps(count int) error {
 func (p *Pixoo64) ResetHttpGifId() error {
 	return p.command("Draw/ResetHttpGifId", nil, nil)
 }
+
+func (dev *Pixoo64) SelectChannel(ch int) error {
+	return dev.command("Channel/SetIndex", map[string]any{"SelectIndex": ch}, nil)
+}

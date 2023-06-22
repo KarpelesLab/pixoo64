@@ -29,13 +29,17 @@ func TestBasics(t *testing.T) {
 		// map[Brightness:100 ClockTime:60 CurClockId:64 GalleryShowTimeFlag:0 GalleryTime:60 GyrateAngle:0 LightSwitch:1 MirrorFlag:0 PowerOnChannelId:1 RotationFlag:0 SingleGalleyTime:-1 TemperatureMode:0 Time24Flag:1 error_code:0]
 	}
 
+	//dev.ResetHttpGifId()
+	//dev.SelectChannel(0)
+	//return
+
 	anim := pixoo64.NewAnim()
 	dr := &font.Drawer{Src: image.NewUniform(color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}), Face: basicfont.Face7x13}
 
 	for i := 0; i < 32; i++ {
-		img, _ := pixoo64.NewImage(64, 100)
+		img, _ := pixoo64.NewImage(64, 250)
 		dr.Dst = img
-		dr.Dot = fixed.P(0, 10+i)
+		dr.Dot = fixed.P(0, 9+i)
 
 		dr.DrawString("Hello")
 
