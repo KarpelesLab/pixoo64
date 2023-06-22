@@ -18,25 +18,28 @@ func New(addr string) Pixoo64 {
 	return Pixoo64(addr)
 }
 
+func (p Pixoo64) doPost(body any) (*http.Response, error) {
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, fmt.Errorf("while encoding body: %w", err)
+	}
+
+	req, err := http.NewRequest("POST", "http://"+string(p)+"/post", bytes.NewReader(buf))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json") // pixoo64 doesn't seem to care, but let's do things right
+
+	return Client.Do(req)
+}
+
 func (p Pixoo64) command(cmd string, args map[string]any, target any) error {
 	if args == nil {
 		args = make(map[string]any)
 	}
 	args["Command"] = cmd
 
-	body, err := json.Marshal(args)
-	if err != nil {
-		return err
-	}
-
-	// run command and return response
-	req, err := http.NewRequest("POST", "http://"+string(p)+"/post", bytes.NewReader(body))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/json") // pixoo64 doesn't seem to care, but let's do things right
-
-	resp, err := Client.Do(req)
+	resp, err := p.doPost(args)
 	if err != nil {
 		return err
 	}
@@ -55,11 +58,15 @@ func (p Pixoo64) command(cmd string, args map[string]any, target any) error {
 	return err
 }
 
-// Reboot will reboot the device. Expect this to return an error such as:
-//
-// net/http: HTTP/1.x transport connection broken: unexpected EOF
+// Reboot will reboot the device.
 func (p Pixoo64) Reboot() error {
-	return p.command("Device/SysReboot", nil, nil)
+	resp, err := p.doPost(map[string]any{"Command": "Device/SysReboot"})
+	if err != nil {
+		return err
+	}
+	// do not try to read response as this'll probably fail since the device will be rebooting
+	resp.Body.Close()
+	return nil
 }
 
 // GetAllConf retrieves all configuration parameters from the device
@@ -121,4 +128,8 @@ func (p Pixoo64) Buzzer(activeTime, offTime, totalTime int) error {
 // some values mean specific things, just like old time BIOS beeps.
 func (p Pixoo64) ShortBeeps(count int) error {
 	return p.Buzzer(100, 100, 200*count-100)
+}
+
+func (p Pixoo64) ResetHttpGifId() error {
+	return p.command("Draw/ResetHttpGifId", nil, nil)
 }

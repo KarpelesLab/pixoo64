@@ -111,3 +111,13 @@ func (i *Image) SubImage(r image.Rectangle) image.Image {
 		Time:   i.Time,
 	}
 }
+
+func (i *Image) SendTo(dev Pixoo64) error {
+	// send a single image means sending an animation with only this image
+	a := Anim{}
+	err := a.AppendFrame(i, -1)
+	if err != nil {
+		return err
+	}
+	return a.SendTo(dev)
+}

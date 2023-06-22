@@ -1,5 +1,7 @@
 # pixoo64
 
-Documentation: http://doc.divoom-gz.com/web/#/12?page_id=242
+This is a simple to use lib to send data to pixoo64. It requires the device's IP address on the local network, which can be obtained from the devices list on the official app.
 
-The app will display the device IP address.
+# Links
+
+Documentation: http://doc.divoom-gz.com/web/#/12?page_id=242

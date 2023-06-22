@@ -14,6 +14,10 @@ type GetHttpGifId struct {
 	PicId int
 }
 
+func NewAnim() *Anim {
+	return &Anim{}
+}
+
 // AppendFrame will add the given image to the list. If it is a pixoo64.Image then
 // the time parameter will be ignored, and the image's original time will be used.
 func (a *Anim) AppendFrame(img image.Image, time int) error {
@@ -25,14 +29,14 @@ func (a *Anim) AppendFrame(img image.Image, time int) error {
 	return nil
 }
 
-func (a *Anim) Send(p Pixoo64) error {
+func (a *Anim) SendTo(dev Pixoo64) error {
 	if len(a.Frames) == 0 || len(a.Frames) >= 60 {
 		return errors.New("animation frames count invalid")
 	}
 
 	// send the animation to the given pixoo64
 	var pid *GetHttpGifId
-	err := p.command("Draw/GetHttpGifId", nil, &pid)
+	err := dev.command("Draw/GetHttpGifId", nil, &pid)
 	if err != nil {
 		return err
 	}
@@ -40,7 +44,7 @@ func (a *Anim) Send(p Pixoo64) error {
 
 	for n, i := range a.Frames {
 		// send frame
-		err = p.command("Draw/SendHttpGif", map[string]any{"PicNum": len(a.Frames), "PicWidth": i.Bounds().Size().X, "PicOffset": n, "PicID": id, "PicSpeed": i.Time, "PicData": base64.StdEncoding.EncodeToString(i.Pix)}, nil)
+		err = dev.command("Draw/SendHttpGif", map[string]any{"PicNum": len(a.Frames), "PicWidth": i.Bounds().Size().X, "PicOffset": n, "PicID": id, "PicSpeed": i.Time, "PicData": base64.StdEncoding.EncodeToString(i.Pix)}, nil)
 		if err != nil {
 			return err
 		}
