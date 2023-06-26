@@ -13,7 +13,7 @@ import (
 
 func TestGif(t *testing.T) {
 	// this requires having an actual device
-	dev, err := pixoo64.FindName("Living")
+	dev, err := pixoo64.FindFirst()
 	if err != nil {
 		t.Fatalf("could not locate device: %s", err)
 		return
