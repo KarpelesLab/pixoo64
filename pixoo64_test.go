@@ -14,7 +14,7 @@ import (
 
 func TestBasics(t *testing.T) {
 	// this requires having an actual device
-	dev, err := pixoo64.FindFirst()
+	dev, err := pixoo64.FindName("Living")
 	if err != nil {
 		t.Fatalf("could not locate device: %s", err)
 		return
@@ -29,9 +29,10 @@ func TestBasics(t *testing.T) {
 		// map[Brightness:100 ClockTime:60 CurClockId:64 GalleryShowTimeFlag:0 GalleryTime:60 GyrateAngle:0 LightSwitch:1 MirrorFlag:0 PowerOnChannelId:1 RotationFlag:0 SingleGalleyTime:-1 TemperatureMode:0 Time24Flag:1 error_code:0]
 	}
 
+	//dev.ShortBeeps(1)
 	//dev.ResetHttpGifId()
 	//dev.SelectChannel(0)
-	//return
+	return
 
 	anim := pixoo64.NewAnim()
 	dr := &font.Drawer{Src: image.NewUniform(color.RGBA{R: 0xff, G: 0xff, B: 0xff, A: 0xff}), Face: basicfont.Face7x13}
